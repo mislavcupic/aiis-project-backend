@@ -1,19 +1,18 @@
 package hr.algebra.semregprojectbackend.service;
 
-import hr.algebra.semregprojectbackend.command.RegistrationCreateCommand;
 import hr.algebra.semregprojectbackend.command.RegistrationUpdateCommand;
 import hr.algebra.semregprojectbackend.domain.Registration;
 import hr.algebra.semregprojectbackend.domain.Seminar;
 import hr.algebra.semregprojectbackend.domain.Student;
 import hr.algebra.semregprojectbackend.dto.RegistrationDTO;
+import hr.algebra.semregprojectbackend.dto.SeminarDTO;
+import hr.algebra.semregprojectbackend.dto.StudentDTO;
 import hr.algebra.semregprojectbackend.repository.RegistrationRepository;
 import hr.algebra.semregprojectbackend.repository.SeminarRepository;
 import hr.algebra.semregprojectbackend.repository.StudentRepository;
-import hr.algebra.semregprojectbackend.service.SeminarRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,26 +27,26 @@ public class SeminarRegistrationServiceImpl implements SeminarRegistrationServic
 
     @Override
     public List<RegistrationDTO> getAllRegistrations() {
-        return registrationRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
+        return registrationRepository.findAllWithStudentsAndSeminars().stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<List<RegistrationDTO>> getRegistrationsByTopic(String topic) {
-        List<Registration> registrations = registrationRepository.findAllBySeminar_Topic(topic)
-                .orElse(Collections.emptyList());
-
-        if (registrations.isEmpty()) {
-            return Optional.empty();
-        }
-
-        List<RegistrationDTO> dtoList = registrations.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-
-        return Optional.of(dtoList);
+        return registrationRepository.findAllBySeminar_Topic(topic)
+                .map(registrations -> registrations.stream()
+                        .map(this::mapToDto)
+                        .collect(Collectors.toList()));
     }
 
-
+    @Override
+    public Optional<List<RegistrationDTO>> getRegistrationsByStudentEmail(String email) {
+        return registrationRepository.findAllByStudent_EmailWithStudents(email) // Promijenjeno ime metode
+                .map(registrations -> registrations.stream()
+                        .map(this::mapToDto)
+                        .collect(Collectors.toList()));
+    }
 
     @Override
     public RegistrationDTO createRegistration(RegistrationUpdateCommand registrationUpdateCommand) {
@@ -88,12 +87,19 @@ public class SeminarRegistrationServiceImpl implements SeminarRegistrationServic
         registrationRepository.deleteById(id);
     }
 
+    @Override
+    public Optional<List<RegistrationDTO>> getRegistrationsBySeminarId(Long seminarId) {
+        return registrationRepository.findAllBySeminar_IdWithStudents(seminarId)
+                .map(registrations -> registrations.stream()
+                        .map(this::mapToDto).collect(Collectors.toList()));
+    }
+
     private RegistrationDTO mapToDto(Registration reg) {
-        RegistrationDTO dto = new RegistrationDTO();
-        dto.setId(reg.getId());
-        dto.setStudentId(reg.getStudent().getId());
-        dto.setSeminarId(reg.getSeminar().getId());
-        dto.setRegisteredAt(reg.getRegisteredAt());
-        return dto;
+        return new RegistrationDTO(
+                reg.getId(),
+                new StudentDTO(reg.getStudent()),
+                new SeminarDTO(reg.getSeminar()),
+                reg.getRegisteredAt()
+        );
     }
 }

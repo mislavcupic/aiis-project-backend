@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface SeminarRegistrationService {
     List<RegistrationDTO> getAllRegistrations();
+    Optional<List<RegistrationDTO>> getRegistrationsByStudentEmail(String email);
     Optional<List<RegistrationDTO>> getRegistrationsByTopic(String topic);
     RegistrationDTO createRegistration(RegistrationUpdateCommand registrationUpdateCommand);
     RegistrationDTO updateRegistration(Long id, RegistrationUpdateCommand registrationUpdateCommand);
     void deleteRegistration(Long id);
+    Optional<List<RegistrationDTO>> getRegistrationsBySeminarId(Long seminarId);
 }

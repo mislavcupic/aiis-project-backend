@@ -14,4 +14,5 @@ public interface SeminarRepository extends JpaRepository<Seminar, Long> {
 
 
 
+
 }

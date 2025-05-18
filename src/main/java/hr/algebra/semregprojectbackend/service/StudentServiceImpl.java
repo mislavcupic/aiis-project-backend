@@ -29,8 +29,8 @@ public class StudentServiceImpl implements StudentService {
 
     // Dohvati studenta prema imenu
     @Override
-    public Optional<StudentDTO> getStudentByName(String name) {
-        return studentRepo.findByNameIgnoreCase(name.trim()).map(StudentDTO::new);
+    public Optional<StudentDTO> getStudentByEmail(String email) {
+        return studentRepo.findByEmailIgnoreCase(email.trim()).map(StudentDTO::new);
     }
 
 
@@ -49,8 +49,8 @@ public class StudentServiceImpl implements StudentService {
 
     // Ažuriraj studenta prema imenu
     @Override
-    public Optional<StudentDTO> updateStudent(String name, StudentUpdateCommand studentUpdateCommand) {
-        Optional<Student> studentOpt = studentRepo.findByName(name);
+    public Optional<StudentDTO> updateStudent(Long id, StudentUpdateCommand studentUpdateCommand) {
+        Optional<Student> studentOpt = studentRepo.findById(id);
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();
             student.setName(studentUpdateCommand.getName());
@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
             Student updatedStudent = studentRepo.save(student);
             return Optional.of(new StudentDTO(updatedStudent));
         } else {
-            throw new RuntimeException("Student with name " + name + " not found.");
+            throw new RuntimeException("Student with id " + id + " not found.");
         }
     }
 

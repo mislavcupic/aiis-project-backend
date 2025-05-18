@@ -22,15 +22,15 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
 
-    @GetMapping("/search")
-    public ResponseEntity<StudentDTO> getStudentByName(@RequestParam String name) {
-        Optional<StudentDTO> foundStudent = studentService.getStudentByName(name);
+    @GetMapping(params = "email")
+    public ResponseEntity<StudentDTO> getStudentByEmail(@RequestParam String email) {
+        Optional<StudentDTO> foundStudent = studentService.getStudentByEmail(email);
         return foundStudent.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -42,9 +42,9 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PutMapping("/{name}")
-    public ResponseEntity<Optional<StudentDTO>> updateStudent(@PathVariable String name, @RequestBody StudentUpdateCommand studentUpdateCommand) {
-        Optional<StudentDTO> updatedStudent = studentService.updateStudent(name,studentUpdateCommand);
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<StudentDTO>> updateStudent(@PathVariable Long id, @RequestBody StudentUpdateCommand studentUpdateCommand) {
+        Optional<StudentDTO> updatedStudent = studentService.updateStudent(id,studentUpdateCommand);
         return ResponseEntity.ok(updatedStudent);
     }
 

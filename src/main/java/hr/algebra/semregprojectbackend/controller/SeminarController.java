@@ -8,7 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -43,11 +43,12 @@ public class SeminarController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<SeminarDTO> updateSeminar(@PathVariable Long id,@RequestBody SeminarDTO seminarDTO) {
-        SeminarDTO updated = seminarService.updateSeminar(id,seminarDTO);
+    @PutMapping // Mapira PUT zahtjeve na /api/seminars
+    public ResponseEntity<SeminarDTO> updateSeminar(@RequestParam Long id, @RequestBody SeminarDTO seminarDTO) {
+        SeminarDTO updated = seminarService.updateSeminar(id, seminarDTO);
         return ResponseEntity.ok(updated);
     }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{id}")
     public void deleteSeminar(@PathVariable Long id) {

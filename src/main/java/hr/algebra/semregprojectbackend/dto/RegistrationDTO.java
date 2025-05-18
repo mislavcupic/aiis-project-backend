@@ -5,19 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistrationDTO {
     private Long id;
-    private Long studentId;
-    private Long seminarId;
-    private Date registeredAt;
-
-
-    public void setRegisteredAt(LocalDateTime registeredAt) {
-    }
-
-
+    private StudentDTO student; // Promijenjeno na StudentDTO
+    private SeminarDTO seminar; // Promijenjeno na SeminarDTO
+    private LocalDateTime registeredAt;
 }

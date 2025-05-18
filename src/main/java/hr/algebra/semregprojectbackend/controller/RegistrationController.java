@@ -44,4 +44,16 @@ public class RegistrationController {
         registrationService.deleteRegistration(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+    @GetMapping("/by-seminar/{seminarId}")
+    public ResponseEntity<Optional<List<RegistrationDTO>>> getBySeminar(@PathVariable Long seminarId) {
+        return ResponseEntity.ok(registrationService.getRegistrationsBySeminarId(seminarId));
+    }
+
+    @GetMapping("/by-student/{email}")
+    public ResponseEntity<Optional<List<RegistrationDTO>>> getByStudent(@PathVariable String email) {
+        return ResponseEntity.ok(registrationService.getRegistrationsByStudentEmail(email));
+    }
 }
