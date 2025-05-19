@@ -7,6 +7,7 @@ import hr.algebra.semregprojectbackend.service.SeminarService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -18,13 +19,16 @@ import java.util.Optional;
 public class SeminarController {
 
     private final SeminarService seminarService;
+    private final JmsTemplate jmsTemplate;
 
-    public SeminarController(SeminarService seminarService) {
+    public SeminarController(SeminarService seminarService, JmsTemplate jmsTemplate) {
         this.seminarService = seminarService;
+        this.jmsTemplate = jmsTemplate;
     }
 
     @GetMapping
     public ResponseEntity<List<SeminarDTO>> getAllSeminars() {
+        jmsTemplate.convertAndSend("Poruka za qeue!");
         return ResponseEntity.ok(seminarService.getAllSeminars());
     }
 
