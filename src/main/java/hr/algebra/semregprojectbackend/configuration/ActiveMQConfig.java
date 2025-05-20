@@ -1,7 +1,7 @@
 package hr.algebra.semregprojectbackend.configuration;
 
-import jakarta.jms.ConnectionFactory; // I dalje koristimo jakarta.jms
-import org.apache.activemq.ActiveMQConnectionFactory; // Koristimo ActiveMQConnectionFactory iz Classic-a
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
