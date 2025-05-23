@@ -13,7 +13,7 @@ public class Seminar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+   // @Column(unique = true)
     private String topic;
     private String lecturer;
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1d09muf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0">
-  <bpmn:process id="createNewSeminar" isExecutable="false">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1d09muf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0">
+  <bpmn:process id="createNewSeminar" isExecutable="true" camunda:historyTimeToLive="P180D">
     <bpmn:startEvent id="StartEvent_07je5l7" name="Start Event">
       <bpmn:outgoing>Flow_08xb9ql</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_0lzlhgs" name="Create new Seminar via API&#10;(Implementation: Java)&#10;(Operation: createSeminarOperation)">
+    <bpmn:serviceTask id="Activity_0lzlhgs" name="Create new Seminar via API (Implementation: Java) (Operation: createSeminarOperation)" camunda:class="hr.algebra.semregprojectbackend.delegate.SeminarSaver">
       <bpmn:incoming>Flow_08xb9ql</bpmn:incoming>
       <bpmn:outgoing>Flow_02vg4o0</bpmn:outgoing>
     </bpmn:serviceTask>

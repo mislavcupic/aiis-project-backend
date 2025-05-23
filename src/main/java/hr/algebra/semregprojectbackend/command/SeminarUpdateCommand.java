@@ -18,6 +18,11 @@ public class SeminarUpdateCommand {
     @NotBlank(message = "Lecturer is required")
     private String lecturer;
 
+    public SeminarUpdateCommand(String topic, String lecturer) {
+        this.topic = topic;
+        this.lecturer = lecturer;
+    }
+
     @Primary
 
     public Long getId() {

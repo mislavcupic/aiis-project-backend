@@ -4,6 +4,7 @@ import hr.algebra.semregprojectbackend.command.StudentUpdateCommand;
 import hr.algebra.semregprojectbackend.domain.Student;
 import hr.algebra.semregprojectbackend.dto.StudentDTO;
 import hr.algebra.semregprojectbackend.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,6 @@ public class StudentServiceImpl implements StudentService {
 
 
 
-    // Spremi novog studenta
     @Override
     public Optional<StudentDTO> save(StudentUpdateCommand studentUpdateCommand) {
         Student student = new Student();
@@ -47,7 +47,8 @@ public class StudentServiceImpl implements StudentService {
         return Optional.of(new StudentDTO(savedStudent));
     }
 
-    // Ažuriraj studenta prema imenu
+
+
     @Override
     public Optional<StudentDTO> updateStudent(Long id, StudentUpdateCommand studentUpdateCommand) {
         Optional<Student> studentOpt = studentRepo.findById(id);

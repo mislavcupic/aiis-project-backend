@@ -1,11 +1,10 @@
 package hr.algebra.semregprojectbackend.service;
 
-import hr.algebra.semregprojectbackend.command.SeminarCreateCommand;
 import hr.algebra.semregprojectbackend.command.SeminarUpdateCommand;
 import hr.algebra.semregprojectbackend.domain.Seminar;
 import hr.algebra.semregprojectbackend.dto.SeminarDTO;
 import hr.algebra.semregprojectbackend.repository.SeminarRepository;
-import jakarta.validation.Valid;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 
@@ -26,7 +25,7 @@ public class SeminarServiceImpl implements SeminarService {
     public List<SeminarDTO> getAllSeminars() {
         return seminarRepo.findAll().stream().map(SeminarDTO::new).toList();
     }
-
+    @Transactional
     @Override
     public Optional<SeminarDTO> save(SeminarUpdateCommand seminarUpdateCommand) {
         // Ako je id postavljen, baca se greška jer se ne smije ručno postavljati kod kreiranja
@@ -42,7 +41,7 @@ public class SeminarServiceImpl implements SeminarService {
         return Optional.of(new SeminarDTO(savedSeminar));
     }
 
-
+    @Transactional
     @Override
     public SeminarDTO updateSeminar( Long id, SeminarDTO seminarDTO) {
         Optional<Seminar> seminarOpt = seminarRepo.findById(id);

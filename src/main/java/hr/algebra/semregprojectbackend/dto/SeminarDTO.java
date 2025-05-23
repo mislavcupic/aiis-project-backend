@@ -1,6 +1,7 @@
 package hr.algebra.semregprojectbackend.dto;
 
 import hr.algebra.semregprojectbackend.domain.Seminar;
+import jakarta.validation.constraints.NotBlank;
 
 public class SeminarDTO {
     private Long id;
@@ -16,6 +17,11 @@ public SeminarDTO(Seminar seminar) {
     this.lecturer = seminar.getLecturer();
 }
 
+    public SeminarDTO(Object o, @NotBlank(message = "Topic is required") String topic, @NotBlank(message = "Lecturer is required") String lecturer) {
+        this.topic = topic;
+        this.lecturer = lecturer;
+        this.id = (Long) o;
+    }
 
 
     public Long getId() {
