@@ -5,6 +5,8 @@ import hr.algebra.semregprojectbackend.command.SeminarUpdateCommand;
 import hr.algebra.semregprojectbackend.dto.SeminarDTO;
 import hr.algebra.semregprojectbackend.service.SeminarService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
@@ -21,7 +23,7 @@ public class SeminarController {
     private final SeminarService seminarService;
     private final JmsTemplate jmsTemplate;
     private final RuntimeService runtimeService;
-
+    private static final Logger logger = LoggerFactory.getLogger(SeminarController.class);
     public SeminarController(SeminarService seminarService, JmsTemplate jmsTemplate, RuntimeService runtimeService) {
         this.seminarService = seminarService;
         this.jmsTemplate = jmsTemplate;
@@ -60,7 +62,7 @@ public class SeminarController {
             processVariables.put("seminarTopic", seminarUpdateCommand.getTopic());
             processVariables.put("seminarLecturer", seminarUpdateCommand.getLecturer());
 
-            // "createNewSeminar" je ID tvog BPMN procesa (iz Camunda Modeler Properties -> General -> ID)
+            // "createNewSeminar" je ID  BPMN procesa (iz Camunda Modeler Properties -> General -> ID)
             // Važno je da je u BPMN-u postavljeno isExecutable="true"
             // Startamo proces i dobijamo instancu procesa
             runtimeService.startProcessInstanceByKey("createNewSeminar", processVariables);
@@ -82,9 +84,8 @@ public class SeminarController {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseDto); // 202 Accepted
 
         } catch (Exception e) {
-            // Logiraj grešku umjesto System.out.println
-            // Dodaj LOGGER na vrh klase: private static final Logger logger = LoggerFactory.getLogger(SeminarController.class);
-            // logger.error("Greška prilikom pokretanja Camunda procesa za seminar: {}", seminarUpdateCommand.getTopic(), e);
+
+              logger.error("Greška prilikom pokretanja Camunda procesa za seminar: {}", seminarUpdateCommand.getTopic(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         // --- KRAJ IZMJENJENOG DIJELA ---
@@ -142,8 +143,8 @@ public class SeminarController {
         }
     }
 
-}
-/*
+
+
     // --- Camunda za DELETE (Brisanje) ---
     @ResponseStatus(HttpStatus.NO_CONTENT) // Vraća 204 No Content
     @DeleteMapping("/{id}")
@@ -156,16 +157,43 @@ public class SeminarController {
 
             runtimeService.startProcessInstanceByKey("deleteSeminar", processVariables); // Koristi ID iz BPMN-a
 
-            logger.info("Camunda proces za brisanje seminara pokrenut za ID: {}", id);
+         //   logger.info("Camunda proces za brisanje seminara pokrenut za ID: {}", id);
             // HTTP 204 No Content se vraća automatski jer je metoda void i ima @ResponseStatus
         } catch (Exception e) {
+
             logger.error("Greška prilikom pokretanja Camunda procesa za brisanje seminara s ID {}:", id, e);
             // U slučaju greške, ako želiš vratiti status različit od 204, morao bi promijeniti povratni tip metode u ResponseEntity<?>
             // Npr. return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
- */
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*package hr.algebra.semregprojectbackend.controller;
 
 
